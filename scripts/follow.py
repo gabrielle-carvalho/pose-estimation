@@ -10,7 +10,7 @@ import threading
 import time
 from mission_control.generate_pdf.save_pdf import SavePDF
 
-from mission_control.skills_manager import Ski
+from skills_manager import Skills_Manager
 
 
 
@@ -98,6 +98,11 @@ class NavigationFollowMe(Mission):
                     self.current_step = self.Steps.RECOGNIZE_PERSON
 
             case self.Steps.RECOGNIZE_PERSON:
+
+                self.pose_estimation_manager = Skills_Manager()
+                self.RecognizeObjectPosition_manager = Skills_Manager()
+                self.pose_estimation_manager.execute("")
+
                 has_recognized = self.skills_manager.execute('RecognizeObject')
                 if has_recognized:
                     self.detected_objects = (
