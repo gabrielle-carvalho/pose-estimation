@@ -92,7 +92,36 @@ while True:
              if x is not None and y is not None:
                 x_int, y_int = int(x * frame.shape[1]), int(y * frame.shape[0])
                 cv2.circle(frame, (x_int, y_int), 5, (0, 0, 255), -1)
-
+                 
+    # 2. Calcular bounding box com base no tronco
+        trunk_keys = ['left_shoulder', 'right_shoulder', 'left_hip', 'right_hip']
+        trunk_points = []
+    
+        for key in trunk_keys:
+            if key in keypoints:
+                x, y = keypoints[key]
+                if x is not None and y is not None:
+                    x_int = int(x * frame.shape[1])
+                    y_int = int(y * frame.shape[0])
+                    trunk_points.append((x_int, y_int))
+                    cv2.circle(frame, (x_int, y_int), 5, (255, 0, 0), -1)  # Azul para keypoints do tronco
+    
+        if trunk_points:
+            x_coords, y_coords = zip(*trunk_points)
+            x_min, x_max = min(x_coords), max(x_coords)
+            y_min, y_max = min(y_coords), max(y_coords)
+    
+            # Margem opcional para aumentar a caixa
+            margin_x = int((x_max - x_min) * 0.2)
+            margin_y = int((y_max - y_min) * 0.3)
+    
+            x_min = max(0, x_min - margin_x)
+            y_min = max(0, y_min - margin_y)
+            x_max = min(frame.shape[1], x_max + margin_x)
+            y_max = min(frame.shape[0], y_max + margin_y)
+    
+            # Desenhar bounding box verde ao redor do tronco
+            cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
     cv2.imshow('Reconhecimento de Pose', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
