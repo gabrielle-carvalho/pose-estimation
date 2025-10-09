@@ -1,5 +1,3 @@
-# Arquivo: 2_treinamento_modelo.py
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -11,7 +9,7 @@ import os
 csv_path = '../models/keypoints_dataset.csv'
 model_dir = '../models/'
 
-print("Carregando dataset...")
+print("Carregando dataset")
 df = pd.read_csv(csv_path)
 
 df.dropna(inplace=True) # Remover linhas com valores ausentes
