@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from ultralytics import YOLO
 
 class GetKeypoint(BaseModel):
+    LEFT_EAR:       int = 3
+    RIGHT_EAR:      int = 4
     LEFT_SHOULDER:  int = 5
     RIGHT_SHOULDER: int = 6
     LEFT_ELBOW:     int = 7
@@ -28,6 +30,8 @@ class DetectKeypoint:
 
     def extract_keypoint(self, keypoint: np.ndarray) -> dict:
         return {
+            'left_ear': keypoint[self.get_keypoint.LEFT_EAR],
+            'right_ear': keypoint[self.get_keypoint.RIGHT_EAR],
             'left_shoulder': keypoint[self.get_keypoint.LEFT_SHOULDER],
             'right_shoulder': keypoint[self.get_keypoint.RIGHT_SHOULDER],
             'left_elbow': keypoint[self.get_keypoint.LEFT_ELBOW],
@@ -110,4 +114,3 @@ if __name__ == "__main__":
     
     process_directories(directories, output_csv_path)
     print(f"\nExtração concluída! Dataset salvo em: {output_csv_path}")
-
